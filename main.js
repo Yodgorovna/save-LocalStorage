@@ -1,3 +1,28 @@
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function () {
+  modal.style.display = "block";
+};
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
 let box = document.querySelector(".box");
 let container = document.querySelector(".container");
 import { getData, getSingleData } from "./service.js";
@@ -20,7 +45,7 @@ const getState = (key) => {
 
 const renderLocalData = () => {
   const data = getState("product");
-  container.innerHTML = data
+  modal.innerHTML = data
     .map(
       (item) => `<div>
     <img width = '300' src="${item.url}" alt="img" />
@@ -62,7 +87,7 @@ box.addEventListener("click", async (e) => {
 });
 renderLocalData();
 
-container.addEventListener("click", async (e) => {
+modal.addEventListener("click", async (e) => {
   if (e.target.dataset.deleteid) {
     const data = getState("product");
     console.log(data);
