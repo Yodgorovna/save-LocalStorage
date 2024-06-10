@@ -20,26 +20,31 @@ const getState = (key) => {
 
 const renderLocalData = () => {
   const data = getState("product");
-  container.innerHTML = data.map(
-    (item) => `<div>
-    <img src="${item.url}" alt="" />
+  container.innerHTML = data
+    .map(
+      (item) => `<div>
+    <img width = '300' src="${item.url}" alt="img" />
     <h1>${item.title}</h1>
+    <button data-deleteid = '${item.id}'>remove</button>
   </div>`
-  );
+    )
+    .join("");
 };
 
 const render = async () => {
   const data = await getData();
 
-  box.innerHTML = data.map(
-    (item) => `
+  box.innerHTML = data
+    .map(
+      (item) => `
   <div>
     <img width = '300' src = '${item.url}' alt = 'img'/>
     <h2>${item.title}</h2>
     <button data-id ='${item.id}'>add</button>
   </div>
   `
-  );
+    )
+    .join("");
 };
 
 render();
@@ -55,5 +60,21 @@ box.addEventListener("click", async (e) => {
     }
   }
 });
-
 renderLocalData();
+
+container.addEventListener("click", async (e) => {
+  if (e.target.dataset.deleteid) {
+    const data = getState("product");
+    console.log(data);
+
+    for (let i = 0; i < data.length; i++) {
+      if (e.target.dataset.deleteid == data[i].id) {
+        data.splice(i, 1);
+      }
+    }
+    console.log(data);
+    saveState("product", data);
+  }
+
+  renderLocalData();
+});
